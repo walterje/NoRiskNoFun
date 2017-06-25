@@ -62,11 +62,20 @@ class WaitingForNextTurnState extends State {
         AssetMap.Region attackerRegion = data.getMapAsset().getRegion(message.getAttackerRegion());
         AssetMap.Region defenderRegion = data.getMapAsset().getRegion(message.getDefenderRegion());
 
-        data.setGuiChanges(new RemoveTroopGui(defenderRegion.getName(), defenderRegion.getTroops() - message.getDefenderTroops()));
+        // if difference is negative
+        // e.g. defender had 1 troop, got attacked with 3 -> difference = -2, so 2 troops need to be added
+        int defenderRegionTroops = defenderRegion.getTroops() - message.getDefenderTroops();
+        if (defenderRegionTroops < 0) {
+            // spawn the correct amount of troops as an amount can't be set in SpawnTroopGui
+            for (int i = 0; i < Math.abs(defenderRegionTroops); i++) {
+                data.setGuiChanges(new SpawnTroopGui(defenderRegion.getName(), data.nextId()));
+            }
+        } else  {
+            data.setGuiChanges(new RemoveTroopGui(defenderRegion.getName(), defenderRegion.getTroops() - message.getDefenderTroops()));
+        }
         data.setGuiChanges(new UpdateRegionOwnerGui(defenderRegion.getName(), message.getDefenderRegionOwner()));
 
         data.setGuiChanges(new RemoveTroopGui(attackerRegion.getName(), attackerRegion.getTroops() - message.getAttackerTroops()));
-
 
 
         Gdx.app.log("EvaluateDiceResultState", "Attacker Region: " + attackerRegion.getName() +

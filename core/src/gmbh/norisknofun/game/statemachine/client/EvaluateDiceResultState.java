@@ -15,6 +15,7 @@ import gmbh.norisknofun.game.networkmessages.attack.evaluatedice.DiceResult;
 import gmbh.norisknofun.game.statemachine.State;
 import gmbh.norisknofun.scene.SceneManager;
 import gmbh.norisknofun.scene.SceneNames;
+import gmbh.norisknofun.scene.game.figures.Figure;
 
 /**
  * Created by Katharina on 19.05.2017.
@@ -97,7 +98,8 @@ class EvaluateDiceResultState extends State {
         if (defenderRegionTroops < 0) {
             // spawn the correct amount of troops as an amount can't be set in SpawnTroopGui
             for (int i = 0; i < Math.abs(defenderRegionTroops); i++) {
-                data.setGuiChanges(new SpawnTroopGui(defenderRegion.getName(), 1000));
+
+                data.setGuiChanges(new SpawnTroopGui(defenderRegion.getName(), data.nextId()));
             }
         } else  {
             data.setGuiChanges(new RemoveTroopGui(defenderRegion.getName(), defenderRegion.getTroops() - message.getDefenderTroops()));

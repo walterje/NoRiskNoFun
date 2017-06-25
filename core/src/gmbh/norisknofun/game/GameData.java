@@ -37,6 +37,7 @@ public class GameData {
     private int[] diceRoll;
     private int availableDice;
     private int cheatsAvailable;
+    private int currentFigureId;
 
     private int maxNumPlayers;
     private String mapFilename;
@@ -50,6 +51,7 @@ public class GameData {
         guiChanges.setValue(new ConcurrentLinkedQueue<Message>());
 
         cheatsAvailable = 3;
+        currentFigureId = 1000;
     }
 
     public void setMapAsset(AssetMap mapAsset) {
@@ -261,6 +263,10 @@ public class GameData {
 
     public String getCurrentStateName() {
         return currentState;
+    }
+
+    public int nextId() {
+        return currentFigureId++;
     }
 
 }
