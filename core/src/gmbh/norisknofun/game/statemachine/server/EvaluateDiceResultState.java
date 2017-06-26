@@ -213,7 +213,8 @@ class EvaluateDiceResultState extends State {
         if (data.getNumberOfRegionOwnedByPlayer(defenderName) <= 0) {
 
             Gdx.app.log("Server Evaluate", "Sending PlayerLost() to " + data.getPlayerById(defenderId).getPlayerName());
-            // TODO: Actually Remove Player
+
+            data.getPlayers().removePlayer(defenderName);
             context.sendMessage(new PlayerLost(), defenderId);
 
             checkIfSomeoneHasWon(); // may only happen if the defender lost, so only check here
