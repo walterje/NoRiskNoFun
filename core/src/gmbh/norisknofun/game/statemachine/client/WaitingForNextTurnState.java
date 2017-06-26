@@ -9,8 +9,10 @@ import gmbh.norisknofun.game.gamemessages.gui.RemoveTroopGui;
 import gmbh.norisknofun.game.gamemessages.gui.SpawnTroopGui;
 import gmbh.norisknofun.game.gamemessages.gui.UpdateRegionOwnerGui;
 import gmbh.norisknofun.game.networkmessages.Message;
+import gmbh.norisknofun.game.networkmessages.attack.PlayerWon;
 import gmbh.norisknofun.game.networkmessages.attack.evaluatedice.AttackResult;
 import gmbh.norisknofun.game.networkmessages.attack.evaluatedice.IsAttacked;
+import gmbh.norisknofun.game.networkmessages.attack.PlayerLost;
 import gmbh.norisknofun.game.networkmessages.common.MoveTroop;
 import gmbh.norisknofun.game.networkmessages.common.NextPlayer;
 import gmbh.norisknofun.game.networkmessages.common.SpawnTroop;
@@ -44,6 +46,10 @@ class WaitingForNextTurnState extends State {
             doSpawnTroop((SpawnTroop) message);
         } else if (message.getType().equals(MoveTroop.class)) {
             doMoveTroop((MoveTroop) message);
+        } else if (message.getType().equals(PlayerLost.class)) {
+            playerLost();
+        } else if (message.getType().equals(PlayerWon.class)) {
+            playerWon((PlayerWon) message);
         }
         else{
             Gdx.app.log("WaitingForNextTurnState","unknown messgae:"+message.getType().getSimpleName());
@@ -94,5 +100,16 @@ class WaitingForNextTurnState extends State {
                 context.setState(new DistributionState(context));
             }
         }
+    }
+
+    private void playerLost() {
+        Gdx.app.log("Waiting State", "Received PlayerWon");
+        data.setLastError("No regions left.\nYou lost.");
+    }
+
+    private void playerWon(PlayerWon message) {
+        Gdx.app.log("Waiting State", "Received PlayerWon");
+        data.setWinner(message.getPlayerName());
+        context.setState(new EndGameState(context));
     }
 }

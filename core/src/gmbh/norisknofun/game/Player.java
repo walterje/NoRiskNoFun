@@ -15,6 +15,7 @@ public class Player {
     private String id = "";
     private int playerColor;
     private int troopsActive; // current amount of troops this player owns
+    private int ownedRegions;
 
 
     public Player(){
@@ -83,5 +84,17 @@ public class Player {
 
     public void updateTroopsActive(int troopsActive) {
         this.troopsActive += troopsActive;
+    }
+
+    public int getOwnedRegions() {
+        return ownedRegions;
+    }
+
+    public void setOwnedRegions(int ownedRegions) {
+        this.ownedRegions = ownedRegions;
+    }
+
+    public void updateOwnedRegions(int ownedRegions) {
+        this.ownedRegions += ownedRegions;
     }
 }

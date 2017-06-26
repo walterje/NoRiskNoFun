@@ -129,7 +129,7 @@ public class GameData {
      *
      * @param lastError The last error messaged.
      */
-    public void setLastError(String lastError) {
+    public void  setLastError(String lastError) {
         this.lastError.setValue(lastError);
         this.lastError.setChanged();
     }

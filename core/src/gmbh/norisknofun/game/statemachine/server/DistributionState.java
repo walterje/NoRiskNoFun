@@ -20,17 +20,17 @@ class DistributionState extends State {
 
     private final ServerContext context;
     private final GameDataServer data;
-    private static final int TROOPS_TO_SPAWN=3;
+    private final int TROOPS_TO_SPAWN;
 
     DistributionState(ServerContext context){
         this.context=context;
         this.data=this.context.getGameData();
+        TROOPS_TO_SPAWN = data.getNumberOfRegionOwnedByPlayer(data.getCurrentplayer().getPlayerName());
     }
 
     @Override
     public void enter() {
         addTroopsToPlayer();
-        checkIfSomeoneHasWon();
     }
 
     @Override
@@ -93,16 +93,6 @@ class DistributionState extends State {
     private void sendSpawnTroopCheckMessage(String senderId, String errormessage, boolean movepossible){
         SpawnTroopCheck response = new SpawnTroopCheck(movepossible,errormessage);
         context.sendMessage(response,senderId);
-    }
-
-    private void checkIfSomeoneHasWon(){
-        int numOfRegion;
-        for(Player player: data.getPlayers().getPlayerlist()){
-           numOfRegion=data.getNumberOfRegionOwnedByPlayer(player.getPlayerName());
-            if(numOfRegion==data.getMapAsset().getRegions().size()){
-               sendDisconnectClientMessage();
-            }
-        }
     }
 
     private void sendDisconnectClientMessage(){

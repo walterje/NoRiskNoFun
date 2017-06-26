@@ -98,9 +98,9 @@ public class EndGameScene extends SceneBase {
     @Override
     public void show(){
         if(data.getWinner().equals(data.getMyself().getPlayerName())){
-            sceneObject.setText("You won°!");
+            sceneObject.setText("You won!");
         } else{
-            sceneObject.setText("You lost!");
+            sceneObject.setText("You lost!\n" + data.getWinner() + " won.");
         }
 
         super.show();

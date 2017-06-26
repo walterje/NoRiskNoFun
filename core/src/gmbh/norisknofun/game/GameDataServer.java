@@ -1,5 +1,7 @@
 package gmbh.norisknofun.game;
 
+import com.badlogic.gdx.Gdx;
+
 import gmbh.norisknofun.assets.AssetMap;
 
 /**
@@ -161,11 +163,20 @@ public class GameDataServer {
     public int getNumberOfRegionOwnedByPlayer(String playername){
         int count=0;
 
+        Gdx.app.log("Server GameData", "Checking regions of player: " + playername);
+
         for (AssetMap.Region region: mapAsset.getRegions()) {
+            Gdx.app.log("Server GameData", "Region: " + region.getName() + " belongs: " + region.getOwner());
+
             if(region.getOwner().equals(playername)){
+
+                Gdx.app.log("Server GameData", "increasing");
                 count++;
             }
         }
+
+
+        Gdx.app.log("Server GameData", "Player has regions: " + count);
         return count;
     }
 

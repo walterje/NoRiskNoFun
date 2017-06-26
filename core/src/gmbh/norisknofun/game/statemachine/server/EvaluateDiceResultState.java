@@ -5,10 +5,13 @@ import com.badlogic.gdx.Gdx;
 import java.util.Arrays;
 
 import gmbh.norisknofun.game.GameDataServer;
+import gmbh.norisknofun.game.Player;
 import gmbh.norisknofun.game.networkmessages.Message;
+import gmbh.norisknofun.game.networkmessages.attack.PlayerWon;
 import gmbh.norisknofun.game.networkmessages.attack.evaluatedice.AttackResult;
 import gmbh.norisknofun.game.networkmessages.attack.evaluatedice.DiceAmount;
 import gmbh.norisknofun.game.networkmessages.attack.evaluatedice.DiceResult;
+import gmbh.norisknofun.game.networkmessages.attack.PlayerLost;
 import gmbh.norisknofun.game.statemachine.State;
 
 /**
@@ -22,6 +25,9 @@ class EvaluateDiceResultState extends State {
 
     private final ServerContext context;
     private final GameDataServer data;
+    private String defenderName;
+    private String defenderId;
+
     EvaluateDiceResultState(ServerContext context){
 
         this.context=context;
@@ -68,6 +74,10 @@ class EvaluateDiceResultState extends State {
     private void handleAttackResult(int winsOfAttacker, int winsOfDefender){
         Gdx.app.log(LOG_TAG_EVALUATE_RESULT_NAME, "Attacker Troops: " + data.getAttackerRegion().getTroops() + " Wins: " + winsOfAttacker);
         Gdx.app.log(LOG_TAG_EVALUATE_RESULT_NAME, "Defender Troops: " + data.getDefendersRegion().getTroops() + " Wins: " + winsOfDefender);
+
+        defenderName = data.getDefendersRegion().getOwner();
+        defenderId = data.getPlayerByName(defenderName).getId();
+        Gdx.app.log("Server Evaluate", "Defender Name: " + defenderName);
 
         // all attacking troops will be either killed on lose or moved to new region on win, so subtract getAttackingTroops()
         data.getAttackerRegion().updateTroops(-data.getAttackingTroops());
@@ -116,6 +126,8 @@ class EvaluateDiceResultState extends State {
         attackResult.setLoserId(loserId);
 
         context.sendMessage(attackResult);
+
+        checkIfDefenderLost();
     }
 
     private int [] calculateAttackResult(){
@@ -192,5 +204,34 @@ class EvaluateDiceResultState extends State {
 
     private String getAttackerId(){
         return data.getPlayerByName(data.getAttackerRegion().getOwner()).getId();
+    }
+
+    private void checkIfDefenderLost() {
+        Gdx.app.log("Server Evaluate", "Def Region Remaining: " +
+                data.getNumberOfRegionOwnedByPlayer(defenderName));
+
+        if (data.getNumberOfRegionOwnedByPlayer(defenderName) <= 0) {
+
+            Gdx.app.log("Server Evaluate", "Sending PlayerLost() to " + data.getPlayerById(defenderId).getPlayerName());
+            // TODO: Actually Remove Player
+            context.sendMessage(new PlayerLost(), defenderId);
+
+            checkIfSomeoneHasWon(); // may only happen if the defender lost, so only check here
+        }
+    }
+
+    /**
+     * Check if all regions belong to the same player
+     */
+    private void checkIfSomeoneHasWon(){
+        Gdx.app.log("Server Evaluate", "Checking if won...");
+        int numOfRegion;
+        for(Player player: data.getPlayers().getPlayerlist()){
+            numOfRegion=data.getNumberOfRegionOwnedByPlayer(player.getPlayerName());
+            if(numOfRegion==data.getMapAsset().getRegions().size()){
+                Gdx.app.log("Server Evaluate", "Player Won!: " + player.getPlayerName());
+                context.sendMessage(new PlayerWon(player.getPlayerName()));
+            }
+        }
     }
 }

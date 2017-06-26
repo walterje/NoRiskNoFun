@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import gmbh.norisknofun.game.gamemessages.gui.ActionDoneGui;
 import gmbh.norisknofun.game.gamemessages.gui.MoveTroopGui;
 import gmbh.norisknofun.game.networkmessages.Message;
+import gmbh.norisknofun.game.networkmessages.attack.PlayerLost;
+import gmbh.norisknofun.game.networkmessages.attack.PlayerWon;
 import gmbh.norisknofun.game.networkmessages.choosetarget.AttackRegion;
 import gmbh.norisknofun.game.networkmessages.choosetarget.AttackRegionCheck;
 import gmbh.norisknofun.game.networkmessages.choosetarget.NoAttack;
@@ -36,6 +38,10 @@ class ChooseTargetState extends State {
            requestAttack((MoveTroopGui) message);
        } else if (message.getType().equals(NoAttack.class)) {
             context.setState(new MoveTroopsState(context));
+       } else if (message.getType().equals(PlayerLost.class)) { // temporary
+           playerLost();
+       } else if (message.getType().equals(PlayerWon.class)) {
+           playerWon((PlayerWon) message);
        }
        else {
            Gdx.app.log("Client ChooseTargetState", "unknown message:"+message.getClass().getSimpleName());
@@ -53,5 +59,16 @@ class ChooseTargetState extends State {
     private void requestAttack(MoveTroopGui message){
         AttackRegion attackRegion= new AttackRegion(message.getFromRegion(),message.getToRegion());
         context.sendMessage(attackRegion);
+    }
+
+    private void playerLost() {
+        Gdx.app.log("Waiting State", "Received PlayerLost");
+        context.getGameData().setLastError("No regions left.\nYou lost.");
+    }
+
+    private void playerWon(PlayerWon message) {
+        Gdx.app.log("Waiting State", "Received PlayerWon");
+        context.getGameData().setWinner(message.getPlayerName());
+        context.setState(new EndGameState(context));
     }
 }
