@@ -38,6 +38,7 @@ public class NoRiskNoFun implements ApplicationListener  {
     @Override
     public void create() {
 
+        removeBackKey();
         registerScenes();
         showStartupScene();
     }
@@ -61,6 +62,11 @@ public class NoRiskNoFun implements ApplicationListener  {
     private void showStartupScene() {
 
         SceneManager.getInstance().setActiveScene(SceneNames.MAIN_MENU_SCENE);
+    }
+
+    private void removeBackKey(){
+
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override

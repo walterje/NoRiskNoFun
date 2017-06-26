@@ -34,6 +34,12 @@ public class CreateGameScene extends SceneBase {
 
     private TextFieldSceneObject textField;
 
+    private final float buttonWidth = Gdx.graphics.getWidth()/6.0f;
+    private final float buttonHeight = Gdx.graphics.getHeight()/6.0f;
+
+    private final float labelWidth = Gdx.graphics.getWidth()/9.0f;
+    private final float labelHeight = Gdx.graphics.getHeight()/9.0f;
+
     public CreateGameScene(SceneData sceneData) {
 
         super(SceneNames.CREATE_GAME_SCENE, Color.WHITE);
@@ -55,10 +61,10 @@ public class CreateGameScene extends SceneBase {
 
         LabelSceneObject sceneObject = new LabelSceneObject(sceneData.createLabel(Texts.SELECT_NAME_LABEL, Assets.FONT_60PX_WHITE_WITH_BORDER));
         addSceneObject(sceneObject);
-        sceneObject.setBounds(Gdx.graphics.getWidth()/8.0f, Gdx.graphics.getHeight()/2.0f, sceneObject.getWidth(), 125);
+        sceneObject.setBounds((Gdx.graphics.getWidth()/8.0f)+(sceneObject.getWidth()/2.0f), Gdx.graphics.getHeight()/2.0f, labelWidth, labelHeight);
 
         textField = new TextFieldSceneObject(sceneData.createTextField(Assets.NAME_TEXT_FIELD_DESCRIPTOR));
-        textField.setBounds((Gdx.graphics.getWidth()/8.0f)+ sceneObject.getWidth(), Gdx.graphics.getHeight()/2.0f, 500,125);
+        textField.setBounds((Gdx.graphics.getWidth()/2.0f), Gdx.graphics.getHeight()/2.0f, Gdx.graphics.getWidth()/5.0f,sceneObject.getHeight());
         addSceneObject(textField);
     }
 
@@ -69,10 +75,10 @@ public class CreateGameScene extends SceneBase {
         ImageButtonSceneObject threePlayers = new ImageButtonSceneObject(sceneData.createImageButton(Assets.THREE_PLAYERS_BUTTON_FILENAME), buttonPressedSound);
         ImageButtonSceneObject fourPlayers = new ImageButtonSceneObject(sceneData.createImageButton(Assets.FOUR_PLAYERS_BUTTON_FILENAME), buttonPressedSound);
 
-        backButton.setBounds(Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 10f, 275f, 240f);
-        twoPlayers.setBounds(Gdx.graphics.getWidth() / 10.0f, Gdx.graphics.getHeight() / 8.0f, 275.0f, 240f);
-        threePlayers.setBounds(Gdx.graphics.getWidth() / 10.0f + 300.0f, Gdx.graphics.getHeight() / 8.0f,275.0f, 240.0f);
-        fourPlayers.setBounds(Gdx.graphics.getWidth() / 10.0f + 600.0f, Gdx.graphics.getHeight() / 8.0f, 275.0f, 240.0f);
+        backButton.setBounds(Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 10f, buttonWidth, buttonHeight);
+        twoPlayers.setBounds(Gdx.graphics.getWidth() / 7.0f, Gdx.graphics.getHeight() / 8.0f, buttonWidth, buttonHeight);
+        threePlayers.setBounds((Gdx.graphics.getWidth() / 3.9f), Gdx.graphics.getHeight() / 8.0f,buttonWidth, buttonHeight);
+        fourPlayers.setBounds((Gdx.graphics.getWidth() / 2.7f), Gdx.graphics.getHeight() / 8.0f, buttonWidth, buttonHeight);
 
         backButton.addListener(new BackClickListener());
         twoPlayers.addListener(new ContinueClickListener(2));

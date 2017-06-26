@@ -42,6 +42,9 @@ public class JoinGameScene extends SceneBase {
      */
     private TextFieldSceneObject hostTextField;
 
+    private final float buttonWidth = Gdx.graphics.getWidth()/6.0f;
+    private final float buttonHeight = Gdx.graphics.getHeight()/6.0f;
+
 
     /**
      * Construct and initialize main menu scene.
@@ -69,8 +72,8 @@ public class JoinGameScene extends SceneBase {
         ImageButtonSceneObject imageButtonBack = new ImageButtonSceneObject(sceneData.createImageButton(Assets.BACK_BUTTON_FILENAME), buttonPressedSound);
         ImageButtonSceneObject joinGameButton = new ImageButtonSceneObject(sceneData.createImageButton(Assets.JOIN_GAME_BUTTON_FILENAME), buttonPressedSound);
 
-        joinGameButton.setBounds((float) ((Gdx.graphics.getWidth() / 2) - 137.5), (Gdx.graphics.getHeight() / 10), 275, 240);
-        imageButtonBack.setBounds((float) (Gdx.graphics.getWidth() / 1.5), (Gdx.graphics.getHeight() / 10), 275, 240);
+        joinGameButton.setBounds((float) ((Gdx.graphics.getWidth() / 2) - 137.5), (Gdx.graphics.getHeight() / 10), buttonWidth, buttonHeight);
+        imageButtonBack.setBounds((float) (Gdx.graphics.getWidth() / 1.5), (Gdx.graphics.getHeight() / 10), buttonWidth, buttonHeight);
 
         joinGameButton.addListener(new SwitchToLobbySceneListener());
         imageButtonBack.addListener(new SwitchSceneClickListener(SceneNames.MAIN_MENU_SCENE));

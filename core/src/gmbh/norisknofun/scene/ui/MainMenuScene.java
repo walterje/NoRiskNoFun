@@ -28,6 +28,8 @@ public final class MainMenuScene extends SceneBase {
      */
     private final SceneData sceneData;
 
+    private final float buttonWidth = Gdx.graphics.getWidth()/4.0f;
+    private final float buttonHeight = Gdx.graphics.getHeight()/4.0f;
     /**
      * Sound played when buttons are clicked.
      */
@@ -48,6 +50,7 @@ public final class MainMenuScene extends SceneBase {
         initLabel();
     }
 
+
     /**
      * Initialize buttons in the main menu.
      */
@@ -56,8 +59,8 @@ public final class MainMenuScene extends SceneBase {
         ImageButtonSceneObject imageButtonCreate = new ImageButtonSceneObject(sceneData.createImageButton(Assets.CREATE_GAME_BUTTON_FILENAME), buttonPressedSound);
         ImageButtonSceneObject imageButtonJoin = new ImageButtonSceneObject(sceneData.createImageButton(Assets.JOIN_GAME_BUTTON_FILENAME), buttonPressedSound);
 
-        imageButtonCreate.setBounds((Gdx.graphics.getWidth() / 6) - 5, (float) (Gdx.graphics.getHeight() / 2.5), 553, 480);
-        imageButtonJoin.setBounds((Gdx.graphics.getWidth() / 2) + 10, (float) (Gdx.graphics.getHeight() / 2.5), 553, 480);
+        imageButtonCreate.setBounds((Gdx.graphics.getWidth() / 6) - 5, (float) (Gdx.graphics.getHeight() / 2.5),buttonWidth, buttonHeight);
+        imageButtonJoin.setBounds((Gdx.graphics.getWidth() / 2) + 10, (float) (Gdx.graphics.getHeight() / 2.5), buttonWidth, buttonHeight);
 
         imageButtonCreate.addListener(new SetGameHostClickListener(true));
         imageButtonCreate.addListener(new SwitchSceneClickListener(SceneNames.CREATE_GAME_SCENE));

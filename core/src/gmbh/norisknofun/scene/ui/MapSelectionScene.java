@@ -29,6 +29,9 @@ public final class MapSelectionScene extends SceneBase {
     private final SceneData sceneData;
     private final AssetSound buttonPressedSound;
 
+    private final float buttonWidth = Gdx.graphics.getWidth()/5.5f;
+    private final float buttonHight = Gdx.graphics.getHeight()/5.5f;
+
     public MapSelectionScene(SceneData sceneData) {
 
         super(SceneNames.MAP_SELECTION_SCENE, Color.WHITE);
@@ -53,10 +56,10 @@ public final class MapSelectionScene extends SceneBase {
                 sceneData.createTextButton(MAP_THREE_BUTTON_TEXT, Assets.DEFAULT_TEXT_BUTTON_DESCRIPTOR), buttonPressedSound);
         ImageButtonSceneObject backButton = new ImageButtonSceneObject(sceneData.createImageButton(Assets.BACK_BUTTON_FILENAME), buttonPressedSound);
 
-        buttonMapOne.setBounds(490,500,500,120);
-        buttonMapTwo.setBounds(490,250,500,120);
-        buttonMapThree.setBounds(Gdx.graphics.getWidth() / 1.5f, 500, 500, 120);
-        backButton.setBounds(Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 10.0f, 275f, 240f);
+        buttonMapOne.setBounds((Gdx.graphics.getWidth()/7.0f),Gdx.graphics.getHeight()/2.0f,buttonWidth+4.0f,buttonHight);
+        buttonMapTwo.setBounds((Gdx.graphics.getWidth() / 4.5f),Gdx.graphics.getHeight()/6.0f,buttonWidth,buttonHight);
+        buttonMapThree.setBounds(Gdx.graphics.getWidth() / 2f, Gdx.graphics.getHeight()/2.0f,buttonWidth , buttonHight);
+        backButton.setBounds(Gdx.graphics.getWidth() / 1.6f, Gdx.graphics.getHeight() / 10.0f, Gdx.graphics.getWidth()/6.0f, Gdx.graphics.getHeight()/6.0f);
 
         buttonMapOne.addListener(new SetSelectedMapClickListener("maps/carinthia.map"));
         buttonMapOne.addListener(new SwitchSceneClickListener(SceneNames.LOBBY_SCENE));
